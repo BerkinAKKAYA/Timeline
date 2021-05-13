@@ -19,21 +19,35 @@
         </div>
 
         <div style="margin-top: 25px">
-            <input
-                type="number"
-                placeholder="Year"
-                v-model="timestampToAdd.year"
-            />
-            <input
-                type="number"
-                placeholder="Month"
-                v-model="timestampToAdd.month"
-            />
-            <input
-                type="number"
-                placeholder="Day"
-                v-model="timestampToAdd.day"
-            />
+            <select v-model="timestampToAdd.year">
+                <option v-for="day in 30" :key="day">
+                    {{ 2020 + day }}
+                </option>
+            </select>
+
+            <select v-model="timestampToAdd.month">
+                <option>Uncertain</option>
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+            </select>
+
+            <select v-model="timestampToAdd.day">
+                <option>Uncertain</option>
+                <option v-for="day in 30" :key="day">
+                    {{ day }}
+                </option>
+            </select>
+
             <input
                 type="text"
                 placeholder="Title"
@@ -53,20 +67,23 @@ export default {
         return {
             doc: null,
             timestamps: {},
-            timestampToAdd: {},
+            timestampToAdd: { month: "Uncertain", day: "Uncertain" },
         };
     },
     methods: {
         addTimestamp() {
             const { year, month, day, title } = this.timestampToAdd;
+
+            if (!year || !title) {
+                return;
+            }
+
             this.timestamps[year] = this.timestamps[year] || [];
             this.timestamps[year].push({ month, day, title });
-
             this.saveData();
         },
         removeTimestamp(year, key) {
             this.timestamps[year].shift(key);
-
             this.saveData();
         },
         login() {
@@ -86,7 +103,7 @@ export default {
 
             if (this.doc) {
                 this.doc.get().then((doc) => {
-                    this.timestamps = doc.data();
+                    this.timestamps = doc.data() || {};
                 });
             }
         });
@@ -106,9 +123,19 @@ body {
     justify-content: center;
 }
 
+#app {
+    width: 600px;
+    max-width: 90vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 header {
-    padding: 20px;
-    max-width: 500px;
+    margin: 50px 0;
+
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
