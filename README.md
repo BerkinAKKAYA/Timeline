@@ -1,24 +1,5 @@
 # timeline
 
-## Project setup
-```
-yarn install
-```
+Most Minimalistic Calendar Ever
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Remake of [Timeline (Svelte)](https://github.com/BerkinAKKAYA/Timeline)
