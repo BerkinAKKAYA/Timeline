@@ -17,6 +17,7 @@ firebase.initializeApp(firebaseConfig);
 // utils
 const db = firebase.firestore();
 const auth = firebase.auth();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 // collection references
 const usersCollection = db.collection("users");
@@ -25,4 +26,5 @@ const usersCollection = db.collection("users");
 export {
   auth,
   usersCollection,
+  googleProvider
 };

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { auth } from "./firebase";
+import { auth, googleProvider } from "./firebase";
 
 export default {
     methods: {
@@ -18,7 +18,8 @@ export default {
             auth.signInAnonymously();
         },
         signInWithGoogle() {
-            alert("Todo");
+            auth.signInWithPopup(googleProvider);
+            console.log(googleProvider)
         },
     },
 };
@@ -31,12 +32,12 @@ export default {
 }
 
 #buttons {
-	margin-top: 50px;
+    margin-top: 50px;
 
-	button {
-		padding: 10px 15px;
-		margin: 10px;
-		cursor: pointer;
-	}
+    button {
+        padding: 10px 15px;
+        margin: 10px;
+        cursor: pointer;
+    }
 }
 </style>
