@@ -6,7 +6,12 @@
             <div id="timestamps" v-for="(data, year) in sortedTimestamps" :key="year">
                 <h2 class="year">{{ year }}</h2>
 
-                <p class="timestamp" v-for="(timestamp, key) in data" :key="key">
+                <p
+                    class="timestamp"
+                    :class="timestamp.month == 'Uncertain' && 'uncertain'"
+                    v-for="(timestamp, key) in data"
+                    :key="key"
+                >
                     <span class="title">{{ timestamp.title }}</span>
 
                     <span class="remaining">
@@ -159,6 +164,10 @@ body {
 
         display: grid;
         grid-template-columns: 1fr 250px 1fr;
+
+        &.uncertain {
+            opacity: 0.4;
+        }
 
         .title {
             font-weight: bold;
