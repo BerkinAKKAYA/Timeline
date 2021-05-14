@@ -1,105 +1,57 @@
 <template>
     <div id="app">
-        <header>
-            <h1>Timeline</h1>
+        <Header :doc="doc" />
 
-            <button @click="logout()" v-if="doc">Logout</button>
-            <button @click="login()" v-else>Login</button>
-        </header>
+        <div v-if="doc">
+            <div id="timestamps" v-for="(data, year) in sortedTimestamps" :key="year">
+                <h2 class="year">{{ year }}</h2>
 
-        <div id="timestamps" v-for="(data, year) in sortedTimestamps" :key="year">
-            <h2 class="year">{{ year }}</h2>
+                <p class="timestamp" v-for="(timestamp, key) in data" :key="key">
+                    <span class="title">{{ timestamp.title }}</span>
+                    <span class="remaining">{{ remainingDays(timestamp.day, timestamp.month, year) }} days left</span>
+                    <span class="delete" @click="removeTimestamp(year, timestamp)">x</span>
+                </p>
+            </div>
 
-            <p class="timestamp" v-for="(timestamp, key) in data" :key="key">
-                <span class="title">{{ timestamp.title }}</span>
-                <span class="remaining">{{ remainingDays(timestamp.day, timestamp.month, year) }} days left</span>
-                <span class="delete" @click="removeTimestamp(year, key)">x</span>
-            </p>
+            <AddTimestamp :doc="doc" :addToYear="addToYear" />
         </div>
-
-        <div style="margin-top: 25px">
-            <select v-model="timestampToAdd.year">
-                <option v-for="offset in 30" :key="offset">
-                    {{ year + offset - 1 }}
-                </option>
-            </select>
-
-            <select v-model="timestampToAdd.month">
-                <option>Uncertain</option>
-                <option>January</option>
-                <option>February</option>
-                <option>March</option>
-                <option>April</option>
-                <option>May</option>
-                <option>June</option>
-                <option>July</option>
-                <option>August</option>
-                <option>September</option>
-                <option>October</option>
-                <option>November</option>
-                <option>December</option>
-            </select>
-
-            <select v-model="timestampToAdd.day" v-if="timestampToAdd.month != 'Uncertain'">
-                <option>Uncertain</option>
-                <option v-for="day in 30" :key="day">
-                    {{ day }}
-                </option>
-            </select>
-
-            <input type="text" placeholder="Title" v-model="timestampToAdd.title" />
-
-            <button @click="addTimestamp()">Add</button>
-        </div>
+        <div v-else style="margin-top: 100px">Most Minimalistic Calendar Ever</div>
     </div>
 </template>
 
 <script>
 import { auth, usersCollection } from "./firebase";
-
-console.clear();
+import Header from "./Header.vue";
+import AddTimestamp from "./AddTimestamp.vue";
 
 export default {
     name: "App",
+    components: { Header, AddTimestamp },
     data() {
         return {
             doc: null,
             timestamps: {},
-            timestampToAdd: {
-                month: "Uncertain",
-                day: "Uncertain",
-            },
         };
     },
     methods: {
-        addTimestamp() {
-            const { year, month, day, title } = this.timestampToAdd;
-
-            if (!year || !title) {
-                return;
-            }
-
+        addToYear(year, data) {
             this.timestamps[year] = this.timestamps[year] || [];
-            this.timestamps[year].push({ month, day, title });
-            this.saveData();
-        },
-        removeTimestamp(year, key) {
-            this.timestamps[year].shift(key);
+            this.timestamps[year].push(data);
 
-            if (!this.timestamps[year].length) {
+            // Save To Firebase
+            // this.doc.set(this.timestamps);
+        },
+        removeTimestamp(year, { title, month, day }) {
+            this.timestamps[year] = this.timestamps[year].filter(
+                (x) => !(x.title == title && x.month == month && x.day == day)
+            );
+
+            if (this.timestamps[year].length == 0) {
                 delete this.timestamps[year];
             }
 
-            this.saveData();
-        },
-        login() {
-            auth.signInAnonymously();
-        },
-        logout() {
-            auth.signOut();
-        },
-        saveData() {
-            this.doc.set(this.timestamps);
+            // Save To Firebase
+            // this.doc.set(this.timestamps);
         },
         remainingSeconds(day, month, year) {
             const d = day == "Uncertain" ? 1 : day;
@@ -114,10 +66,6 @@ export default {
         },
     },
     computed: {
-        year() {
-            const d = new Date();
-            return d.getFullYear();
-        },
         sortedTimestamps() {
             const result = JSON.parse(JSON.stringify(this.timestamps));
 
@@ -140,8 +88,6 @@ export default {
                 });
             }
         });
-
-        this.timestampToAdd.year = this.year;
     },
 };
 </script>
@@ -159,21 +105,12 @@ body {
 }
 
 #app {
-    width: 600px;
+    width: 800px;
     max-width: 90vw;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-header {
-    margin-top: 100px;
-
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 #timestamps {
