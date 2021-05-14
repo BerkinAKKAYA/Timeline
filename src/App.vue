@@ -8,11 +8,17 @@
 
                 <p class="timestamp" v-for="(timestamp, key) in data" :key="key">
                     <input class="title" v-model="timestamps[year][key].title" @change="save" />
-                    <span class="remaining" v-if="timestamp.day != 'Uncertain'">
-                        {{ remainingDays(timestamp.day, timestamp.month, year) }}
-                        days left
+
+                    <span class="remaining">
+                    		{{
+														timestamp.month == 'Uncertain'
+																? 'Uncertain'
+																: timestamp.day == 'Uncertain'
+																? timestamp.month
+																: remainingDays(timestamp.day, timestamp.month, year) + ' days left'
+												}}
                     </span>
-                    <span v-else></span>
+
                     <span class="delete" @click="removeTimestamp(year, timestamp)">x</span>
                 </p>
             </div>

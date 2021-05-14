@@ -72,7 +72,7 @@ export default {
 #container {
     width: 800px;
     max-width: 90vw;
-    margin-top: 50px;
+    margin: 50px 0;
 
     display: grid;
     grid-template-columns: 2fr 2fr 1fr 1fr 75px;
