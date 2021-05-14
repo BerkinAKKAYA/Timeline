@@ -79,7 +79,6 @@ export default {
     },
     created() {
         auth.onAuthStateChanged((user) => {
-            this.uid = user && user.uid;
             this.doc = user && usersCollection.doc(user.uid);
 
             if (this.doc) {
