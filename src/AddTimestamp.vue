@@ -18,7 +18,7 @@
             <option>December</option>
         </select>
 
-        <select v-model="timestampToAdd.day" :disabled="!timestampToAdd.month">
+        <select v-model="timestampToAdd.day" :disabled="timestampToAdd.month == 'Uncertain'">
             <option>Uncertain</option>
             <option v-for="day in 30" :key="day">
                 {{ day }}
@@ -53,6 +53,11 @@ export default {
             const { year, month, day, title } = this.timestampToAdd;
             this.addToYear(year, { month, day, title });
             this.shown = false;
+
+            this.timestampToAdd.year = this.currentYear;
+            this.timestampToAdd.month = "Uncertain";
+            this.timestampToAdd.day = "Uncertain";
+            this.timestampToAdd.title = "";
         },
     },
     created() {
@@ -91,9 +96,9 @@ export default {
         &:disabled {
             opacity: 0.5;
 
-			&:hover {
-				cursor: not-allowed;
-			}
+            &:hover {
+                cursor: not-allowed;
+            }
         }
     }
 

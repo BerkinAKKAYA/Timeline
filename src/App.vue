@@ -17,20 +17,24 @@
                 </p>
             </div>
 
+            <p v-if="Object.keys(sortedTimestamps).length == 0" class="no-timestamps">No Timestamps Yet</p>
+
             <AddTimestamp :doc="doc" :addToYear="addToYear" />
         </div>
-        <div v-else style="margin-top: 100px">Most Minimalistic Calendar Ever</div>
+
+        <Welcome v-else />
     </div>
 </template>
 
 <script>
 import { auth, usersCollection } from "./firebase";
 import Header from "./Header.vue";
+import Welcome from "./Welcome.vue";
 import AddTimestamp from "./AddTimestamp.vue";
 
 export default {
     name: "App",
-    components: { Header, AddTimestamp },
+    components: { Header, AddTimestamp, Welcome },
     data() {
         return {
             doc: null,
@@ -89,6 +93,7 @@ export default {
             if (this.doc) {
                 this.doc.get().then((doc) => {
                     this.timestamps = doc.data() || {};
+                    console.log(doc.data());
                 });
             }
         });
@@ -154,5 +159,10 @@ body {
             }
         }
     }
+}
+
+.no-timestamps {
+    text-align: center;
+    margin-top: 50px;
 }
 </style>

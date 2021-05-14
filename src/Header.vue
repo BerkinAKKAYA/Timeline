@@ -3,7 +3,6 @@
         <h1>Timeline</h1>
 
         <button @click="logout()" v-if="doc">Logout</button>
-        <button @click="login()" v-else>Login</button>
     </header>
 </template>
 
@@ -13,9 +12,6 @@ import { auth } from "./firebase";
 export default {
     props: ["doc"],
     methods: {
-        login() {
-            auth.signInAnonymously();
-        },
         logout() {
             auth.signOut();
         },
