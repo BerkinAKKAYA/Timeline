@@ -7,7 +7,7 @@
                 <h2 class="year">{{ year }}</h2>
 
                 <p class="timestamp" v-for="(timestamp, key) in data" :key="key">
-                    <input class="title" v-model="timestamps[year][key].title" @change="save" />
+                    <span class="title">{{ timestamp.title }}</span>
 
                     <span class="remaining">
                         {{
