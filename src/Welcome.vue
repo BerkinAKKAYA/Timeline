@@ -35,9 +35,7 @@ export default {
     margin-top: 50px;
 
     button {
-        padding: 10px 15px;
         margin: 10px;
-        cursor: pointer;
     }
 }
 </style>

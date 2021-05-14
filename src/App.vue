@@ -108,6 +108,18 @@ export default {
     box-sizing: border-box;
 }
 
+button {
+		padding: 10px 15px;
+		cursor: pointer;
+		border: 1px solid #bbb;
+		border-radius: 5px;
+		outline: none;
+
+		&:hover {
+				border-color: #999;
+		}
+}
+
 body {
     display: flex;
     justify-content: center;

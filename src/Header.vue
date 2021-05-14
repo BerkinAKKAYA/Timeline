@@ -33,10 +33,5 @@ header {
     h1 {
         text-align: center;
     }
-
-    button {
-        padding: 10px 20px;
-        cursor: pointer;
-    }
 }
 </style>
