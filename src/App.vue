@@ -10,13 +10,13 @@
                     <input class="title" v-model="timestamps[year][key].title" @change="save" />
 
                     <span class="remaining">
-                    		{{
-														timestamp.month == 'Uncertain'
-																? 'Uncertain'
-																: timestamp.day == 'Uncertain'
-																? timestamp.month
-																: remainingDays(timestamp.day, timestamp.month, year) + ' days left'
-												}}
+                        {{
+                            timestamp.month == "Uncertain"
+                                ? "Uncertain"
+                                : timestamp.day == "Uncertain"
+                                ? timestamp.month
+                                : remainingDays(timestamp.day, timestamp.month, year) + " days left"
+                        }}
                     </span>
 
                     <span class="delete" @click="removeTimestamp(year, timestamp)">x</span>
@@ -55,6 +55,10 @@ export default {
             this.save();
         },
         removeTimestamp(year, { title, month, day }) {
+            if (!confirm("Are you sure?")) {
+                return;
+            }
+
             this.timestamps[year] = this.timestamps[year].filter(
                 (x) => !(x.title == title && x.month == month && x.day == day)
             );
@@ -115,15 +119,15 @@ export default {
 }
 
 button {
-		padding: 10px 15px;
-		cursor: pointer;
-		border: 1px solid #bbb;
-		border-radius: 5px;
-		outline: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    outline: none;
 
-		&:hover {
-				border-color: #999;
-		}
+    &:hover {
+        border-color: #999;
+    }
 }
 
 body {
