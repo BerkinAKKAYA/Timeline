@@ -7,8 +7,12 @@
                 <h2 class="year">{{ year }}</h2>
 
                 <p class="timestamp" v-for="(timestamp, key) in data" :key="key">
-                    <span class="title">{{ timestamp.title }}</span>
-                    <span class="remaining">{{ remainingDays(timestamp.day, timestamp.month, year) }} days left</span>
+                    <input class="title" v-model="timestamps[year][key].title" @change="save" />
+                    <span class="remaining" v-if="timestamp.day != 'Uncertain'">
+                        {{ remainingDays(timestamp.day, timestamp.month, year) }}
+                        days left
+                    </span>
+                    <span v-else></span>
                     <span class="delete" @click="removeTimestamp(year, timestamp)">x</span>
                 </p>
             </div>
@@ -38,8 +42,7 @@ export default {
             this.timestamps[year] = this.timestamps[year] || [];
             this.timestamps[year].push(data);
 
-            // Save To Firebase
-            // this.doc.set(this.timestamps);
+            this.save();
         },
         removeTimestamp(year, { title, month, day }) {
             this.timestamps[year] = this.timestamps[year].filter(
@@ -50,8 +53,10 @@ export default {
                 delete this.timestamps[year];
             }
 
-            // Save To Firebase
-            // this.doc.set(this.timestamps);
+            this.save();
+        },
+        save() {
+            this.doc.set(this.timestamps);
         },
         remainingSeconds(day, month, year) {
             const d = day == "Uncertain" ? 1 : day;
@@ -131,6 +136,9 @@ body {
         .title {
             font-weight: bold;
             text-align: right;
+            border: none;
+            outline: none;
+            font-size: 1em;
         }
         .remaining {
             text-align: center;

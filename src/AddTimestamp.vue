@@ -1,10 +1,6 @@
 <template>
-    <div>
-        <select v-model="timestampToAdd.year">
-            <option v-for="offset in 30" :key="offset">
-                {{ currentYear + offset - 1 }}
-            </option>
-        </select>
+    <div id="container" v-if="shown">
+        <input type="text" placeholder="Title" v-model="timestampToAdd.title" />
 
         <select v-model="timestampToAdd.month">
             <option>Uncertain</option>
@@ -22,16 +18,23 @@
             <option>December</option>
         </select>
 
-        <select v-model="timestampToAdd.day" v-if="timestampToAdd.month != 'Uncertain'">
+        <select v-model="timestampToAdd.day" :disabled="!timestampToAdd.month">
             <option>Uncertain</option>
             <option v-for="day in 30" :key="day">
                 {{ day }}
             </option>
         </select>
 
-        <input type="text" placeholder="Title" v-model="timestampToAdd.title" />
+        <select v-model="timestampToAdd.year">
+            <option v-for="offset in 30" :key="offset">
+                {{ currentYear + offset - 1 }}
+            </option>
+        </select>
 
-        <button @click="addTimestamp()">Add</button>
+        <button @click="addTimestamp()" :disabled="!timestampToAdd.title">Add</button>
+    </div>
+    <div v-else>
+        <button id="show" @click="shown = true">Add New</button>
     </div>
 </template>
 
@@ -41,21 +44,15 @@ export default {
     data() {
         return {
             currentYear: 0,
-            timestampToAdd: {
-                month: "Uncertain",
-                day: "Uncertain",
-            },
+            timestampToAdd: { month: "Uncertain", day: "Uncertain" },
+            shown: false,
         };
     },
     methods: {
         addTimestamp() {
             const { year, month, day, title } = this.timestampToAdd;
-
-            if (!year || !title) {
-                return;
-            }
-
-			this.addToYear(year, { month, day, title })
+            this.addToYear(year, { month, day, title });
+            this.shown = false;
         },
     },
     created() {
@@ -65,3 +62,54 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+#container {
+    width: 800px;
+    max-width: 90vw;
+    margin-top: 50px;
+
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 75px;
+    gap: 10px;
+
+    select,
+    input,
+    button {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        outline: none;
+        background: none;
+        color: black;
+
+        &:not(:disabled):hover {
+            border-color: #999;
+            cursor: pointer;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+
+			&:hover {
+				cursor: not-allowed;
+			}
+        }
+    }
+
+    input:hover {
+        cursor: text !important;
+    }
+}
+
+#show {
+    display: block;
+    margin: 50px auto;
+    padding: 15px 25px;
+    cursor: pointer;
+}
+
+.hidden {
+    visibility: hidden;
+}
+</style>
