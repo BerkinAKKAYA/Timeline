@@ -3,7 +3,7 @@
         <Header :doc="doc" />
 
         <div v-if="doc">
-            <div id="timestamps" v-for="(data, year) in sortedTimestamps" :key="year">
+            <div id="timestamps" v-for="(data, year) in timestamps" :key="year">
                 <h2 class="year">{{ year }}</h2>
 
                 <p
@@ -12,7 +12,7 @@
                     v-for="(timestamp, key) in data"
                     :key="key"
                 >
-                    <span class="title">{{ timestamp.title }}</span>
+                    <input class="title" v-model="timestamp.title" @change="save" />
 
                     <span class="remaining">
                         {{
@@ -28,7 +28,7 @@
                 </p>
             </div>
 
-            <p v-if="Object.keys(sortedTimestamps).length == 0" class="no-timestamps">No Timestamps Yet</p>
+            <p v-if="Object.keys(timestamps).length == 0" class="no-timestamps">No Timestamps Yet</p>
 
             <AddTimestamp :doc="doc" :addToYear="addToYear" />
         </div>
@@ -57,6 +57,7 @@ export default {
             this.timestamps[year] = this.timestamps[year] || [];
             this.timestamps[year].push(data);
 
+            this.sortByDate();
             this.save();
         },
         removeTimestamp(year, { title, month, day }) {
@@ -88,17 +89,11 @@ export default {
             const result = this.remainingSeconds(day, month, year) / (1000 * 60 * 60 * 24);
             return Math.ceil(result);
         },
-    },
-    computed: {
-        sortedTimestamps() {
-            const result = JSON.parse(JSON.stringify(this.timestamps));
-
-            for (const year of Object.keys(result)) {
+        sortByDate() {
+            for (const year of Object.keys(this.timestamps)) {
                 const diff = (x) => this.remainingSeconds(x.day, x.month, year);
-                result[year].sort((x, y) => diff(x) - diff(y));
+                this.timestamps[year].sort((x, y) => diff(x) - diff(y));
             }
-
-            return result;
         },
     },
     created() {
@@ -108,7 +103,7 @@ export default {
             if (this.doc) {
                 this.doc.get().then((doc) => {
                     this.timestamps = doc.data() || {};
-                    console.log(doc.data());
+                    this.sortByDate();
                 });
             }
         });
