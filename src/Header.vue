@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import { auth } from "./firebase";
+import { auth } from './firebase';
 
 export default {
-    props: ["doc"],
+    props: ['doc'],
     methods: {
         logout() {
             auth.signOut();
@@ -27,7 +27,7 @@ header {
     margin-top: 100px;
 
     &::before {
-        content: "";
+        content: '';
     }
 
     h1 {

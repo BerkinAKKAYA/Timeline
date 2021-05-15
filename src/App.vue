@@ -16,11 +16,11 @@
 
                     <span class="remaining">
                         {{
-                            timestamp.month == "Uncertain"
-                                ? "Uncertain"
-                                : timestamp.day == "Uncertain"
+                            timestamp.month == 'Uncertain'
+                                ? 'Uncertain'
+                                : timestamp.day == 'Uncertain'
                                 ? timestamp.month
-                                : remainingDays(timestamp.day, timestamp.month, year) + " days left"
+                                : remainingDays(timestamp.day, timestamp.month, year) + ' days left'
                         }}
                     </span>
 
@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import { auth, usersCollection } from "./firebase";
-import Header from "./Header.vue";
-import Welcome from "./Welcome.vue";
-import AddTimestamp from "./AddTimestamp.vue";
+import { auth, usersCollection } from './firebase';
+import Header from './Header.vue';
+import Welcome from './Welcome.vue';
+import AddTimestamp from './AddTimestamp.vue';
 
 export default {
-    name: "App",
+    name: 'App',
     components: { Header, AddTimestamp, Welcome },
     data() {
         return {
@@ -60,7 +60,7 @@ export default {
             this.save();
         },
         removeTimestamp(year, { title, month, day }) {
-            if (!confirm("Are you sure?")) {
+            if (!confirm('Are you sure?')) {
                 return;
             }
 
@@ -78,8 +78,8 @@ export default {
             this.doc.set(this.timestamps);
         },
         remainingSeconds(day, month, year) {
-            const d = day == "Uncertain" ? 1 : day;
-            const m = month == "Uncertain" ? "January" : month;
+            const d = day == 'Uncertain' ? 1 : day;
+            const m = month == 'Uncertain' ? 'January' : month;
             const dateStr = `${m} ${d}, ${year}`;
             const diff = new Date(dateStr) - Date.now();
             return diff;

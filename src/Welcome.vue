@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { auth, googleProvider } from "./firebase";
+import { auth, googleProvider } from './firebase';
 
 export default {
     methods: {
@@ -19,7 +19,7 @@ export default {
         },
         signInWithGoogle() {
             auth.signInWithPopup(googleProvider);
-            console.log(googleProvider)
+            console.log(googleProvider);
         },
     },
 };

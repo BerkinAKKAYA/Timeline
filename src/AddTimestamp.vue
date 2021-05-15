@@ -40,11 +40,11 @@
 
 <script>
 export default {
-    props: ["doc", "addToYear"],
+    props: ['doc', 'addToYear'],
     data() {
         return {
             currentYear: 0,
-            timestampToAdd: { month: "Uncertain", day: "Uncertain" },
+            timestampToAdd: { month: 'Uncertain', day: 'Uncertain' },
             shown: false,
         };
     },
@@ -55,9 +55,9 @@ export default {
             this.shown = false;
 
             this.timestampToAdd.year = this.currentYear;
-            this.timestampToAdd.month = "Uncertain";
-            this.timestampToAdd.day = "Uncertain";
-            this.timestampToAdd.title = "";
+            this.timestampToAdd.month = 'Uncertain';
+            this.timestampToAdd.day = 'Uncertain';
+            this.timestampToAdd.title = '';
         },
     },
     created() {
