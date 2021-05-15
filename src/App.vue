@@ -4,7 +4,11 @@
 
         <div v-if="doc">
             <div id="timestamps" v-for="(data, year) in timestamps" :key="year">
-                <h2 class="year">{{ year }}</h2>
+                <div class="year">
+                    <div></div>
+                    <div class="circle"></div>
+                    <h1>{{ year }}</h1>
+                </div>
 
                 <div
                     class="timestamp"
@@ -12,10 +16,6 @@
                     v-for="(timestamp, key) in data"
                     :key="key"
                 >
-                    <span class="title" @input="(e) => changeName(e, year, key)" contenteditable>
-                        {{ timestamp.title }}
-                    </span>
-
                     <span class="remaining">
                         {{
                             timestamp.month == 'Uncertain'
@@ -26,7 +26,11 @@
                         }}
                     </span>
 
-                    <span class="delete" @click="removeTimestamp(year, timestamp)">x</span>
+                    <div class="circle" @click="removeTimestamp(year, timestamp)"></div>
+
+                    <span class="title" @input="(e) => changeName(e, year, key)" contenteditable>
+                        {{ timestamp.title }}
+                    </span>
                 </div>
             </div>
 
@@ -69,7 +73,7 @@ export default {
             this.save();
         },
         removeTimestamp(year, timestamp) {
-            if (!confirm('Are you sure?')) {
+            if (!confirm('Do you want to delete this timestamp?')) {
                 return;
             }
 
@@ -145,6 +149,14 @@ body {
     justify-content: center;
 }
 
+.circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    background: #333;
+    text-align: center;
+}
+
 #app {
     width: 800px;
     max-width: 90vw;
@@ -156,43 +168,58 @@ body {
 
 #timestamps {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     .year {
-        text-align: center;
-        margin-top: 50px;
-        margin-bottom: 20px;
+        display: grid;
+        grid-template-columns: 1fr 30px 1fr;
+        align-items: center;
+        gap: 20px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+
+        .circle {
+            height: 30px;
+        }
+
+        div {
+            width: 100%;
+        }
     }
 
     .timestamp {
+        width: 100%;
         margin: 10px 0;
         font-size: 1.5em;
 
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 15px 1fr;
+        align-items: center;
+        gap: 25px;
 
-        &.uncertain {
+        &.uncertain .title {
             opacity: 0.4;
         }
 
         .title {
             font-weight: bold;
-            text-align: right;
             border: none;
             outline: none;
             font-size: 1em;
         }
         .remaining {
-            text-align: center;
+            text-align: right;
+            opacity: 0.5;
         }
-        .delete {
-        width: 20px;
-            color: red;
-            opacity: 0.6;
+        .circle {
+            opacity: 0.8;
             cursor: pointer;
-            text-align: center;
 
             &:hover {
                 opacity: 1;
+                background: darkred;
             }
         }
     }

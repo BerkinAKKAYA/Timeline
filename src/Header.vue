@@ -25,6 +25,7 @@ header {
     display: grid;
     grid-template-columns: 100px 1fr 100px;
     margin-top: 100px;
+    margin-bottom: 50px;
 
     &::before {
         content: '';
