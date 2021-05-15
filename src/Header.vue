@@ -34,5 +34,16 @@ header {
     h1 {
         text-align: center;
     }
+
+    button {
+        background: darkred;
+        color: white;
+        border: none;
+        box-shadow: 0 0 0 darkred;
+
+        &:hover {
+            box-shadow: 0 0 8px red;
+        }
+    }
 }
 </style>

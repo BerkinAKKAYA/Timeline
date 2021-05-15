@@ -130,6 +130,7 @@ export default {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
 }
 
 button {
@@ -217,9 +218,12 @@ body {
             opacity: 0.8;
             cursor: pointer;
 
+            box-shadow: 0 0 0 darkred;
+
             &:hover {
                 opacity: 1;
                 background: darkred;
+                box-shadow: 0 0 5px red;
             }
         }
     }
