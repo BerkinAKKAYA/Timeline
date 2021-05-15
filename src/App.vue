@@ -78,8 +78,8 @@ export default {
             this.doc.set(this.timestamps);
         },
         remainingSeconds(day, month, year) {
-            const d = day == 'Uncertain' ? 1 : day;
-            const m = month == 'Uncertain' ? 'January' : month;
+            const d = day == 'Uncertain' ? 31 : day;
+            const m = month == 'Uncertain' ? 'December' : month;
             const dateStr = `${m} ${d}, ${year}`;
             const diff = new Date(dateStr) - Date.now();
             return diff;
