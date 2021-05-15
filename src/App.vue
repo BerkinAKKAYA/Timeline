@@ -6,13 +6,15 @@
             <div id="timestamps" v-for="(data, year) in timestamps" :key="year">
                 <h2 class="year">{{ year }}</h2>
 
-                <p
+                <div
                     class="timestamp"
                     :class="timestamp.month == 'Uncertain' && 'uncertain'"
                     v-for="(timestamp, key) in data"
                     :key="key"
                 >
-                    <input class="title" v-model="timestamp.title" @change="save" />
+                    <span class="title" @input="(e) => changeName(e, year, key)" contenteditable>
+                        {{ timestamp.title }}
+                    </span>
 
                     <span class="remaining">
                         {{
@@ -25,7 +27,7 @@
                     </span>
 
                     <span class="delete" @click="removeTimestamp(year, timestamp)">x</span>
-                </p>
+                </div>
             </div>
 
             <p v-if="Object.keys(timestamps).length == 0" class="no-timestamps">No Timestamps Yet</p>
@@ -43,6 +45,8 @@ import Header from './Header.vue';
 import Welcome from './Welcome.vue';
 import AddTimestamp from './AddTimestamp.vue';
 
+console.clear();
+
 export default {
     name: 'App',
     components: { Header, AddTimestamp, Welcome },
@@ -53,6 +57,10 @@ export default {
         };
     },
     methods: {
+        changeName(e, year, key) {
+            this.timestamps[year][key].title = e.target.innerText;
+            this.save();
+        },
         addToYear(year, data) {
             this.timestamps[year] = this.timestamps[year] || [];
             this.timestamps[year].push(data);
@@ -60,10 +68,12 @@ export default {
             this.sortByDate();
             this.save();
         },
-        removeTimestamp(year, { title, month, day }) {
+        removeTimestamp(year, timestamp) {
             if (!confirm('Are you sure?')) {
                 return;
             }
+
+            const { title, month, day } = timestamp;
 
             this.timestamps[year] = this.timestamps[year].filter(
                 (x) => !(x.title == title && x.month == month && x.day == day)
@@ -76,7 +86,7 @@ export default {
             this.save();
         },
         save() {
-            this.doc.set(this.timestamps);
+            // this.doc.set(this.timestamps);
         },
         remainingSeconds(day, month, year) {
             const d = day == 'Uncertain' ? 31 : day;
@@ -158,7 +168,7 @@ body {
         font-size: 1.5em;
 
         display: grid;
-        grid-template-columns: 1fr 250px 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
 
         &.uncertain {
             opacity: 0.4;
@@ -175,10 +185,11 @@ body {
             text-align: center;
         }
         .delete {
+        width: 20px;
             color: red;
             opacity: 0.6;
             cursor: pointer;
-            text-align: left;
+            text-align: center;
 
             &:hover {
                 opacity: 1;
