@@ -12,7 +12,6 @@
             </button>
 
             <button @click="signInWithGoogle()" class="google">
-                <span class="icon"></span>
                 <span>With Google</span>
             </button>
         </div>
@@ -76,15 +75,6 @@ export default {
         span {
             font-size: 1.3em;
             font-weight: bold;
-        }
-
-        span.icon {
-            display: inline-block;
-            background: url('/img/google_logo.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            width: 28px;
-            height: 28px;
         }
 
         &:hover {
