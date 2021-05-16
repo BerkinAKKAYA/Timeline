@@ -69,7 +69,6 @@ export default {
             this.timestamps[year] = this.timestamps[year] || [];
             this.timestamps[year].push(data);
 
-            this.sortByDate();
             this.save();
         },
         removeTimestamp(year, timestamp) {
@@ -90,13 +89,19 @@ export default {
             this.save();
         },
         save() {
-            // this.doc.set(this.timestamps);
+            this.sortByDate();
+            this.doc.set(this.timestamps);
         },
         remainingSeconds(day, month, year) {
-            const d = day == 'Uncertain' ? 31 : day;
+            const d = parseInt(day == 'Uncertain' ? 31 : day);
             const m = month == 'Uncertain' ? 'December' : month;
             const dateStr = `${m} ${d}, ${year}`;
             const diff = new Date(dateStr) - Date.now();
+
+            if (day == 'Uncertain' && month == 'Uncertain') {
+                return diff + 1;
+            }
+
             return diff;
         },
         remainingDays(day, month, year) {
